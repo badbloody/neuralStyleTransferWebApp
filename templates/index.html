@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Neural Style Transfer</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='background.jpg') }}");
+            background-size: cover; 
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+    <h1>NEURAL STYLE TRANSFER</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <div class="container">
+            <div class="set">
+                <div class="heading-container">
+                    <h2>STEP 1:<br> Upload your image</h2>
+                </div>
+                <div class="button-and-image">
+                    <div class="choose-file-container">
+                        <div class="wrapper-div">
+                            <input type="file" id="imageInput" name="image" accept="image/*">
+                        </div>
+                    </div>
+                    <button type="button" id="uploadButton" class="button">UPLOAD IMAGE</button>
+                    <div id="imageContainer1" class="image-container">
+                        <img id="uploadedImage" class="image" src="{{ url_for('static', filename='placeholder-image.png') }}" alt="Uploaded Image">
+                    </div>
+                </div>
+            </div>
+
+            <div class="set">
+                <div class="heading-container">
+                    <h2>STEP 2: <br>Select a style</h2>
+                </div>
+                <div class="button-and-image">
+                    <div class="select-container">
+                        <select id="processingSelect" name="processing_option">
+                            <option value="choose">(Choose a style)</option>
+                            <option value="sketches">Sketches</option>
+                            <option value="portraits">Portraits</option>
+                            <option value="liquify">Liquify</option>
+                        </select>
+                    </div>
+                    <button type="button" id="showStyleButton" class="button">RANDOM STYLE IMAGE</button>
+                    <div id="imageContainer2" class="image-container">
+                        <img id="styleImage" class="image" src="{{ url_for('static', filename='placeholder-image.png') }}" alt="Style Image">
+                    </div>
+                </div>
+            </div>
+
+            <div class="set">
+                <div class="heading-container">
+                    <h2>STEP 3:<br> Generate a new image </h2>
+                </div>
+                <div class="filler-div"></div>
+                <div class="button-and-image">
+                    <button type="button" id="processImageButton" class="button">PERFORM STYLE TRANSFER</button>
+                    <div id="imageContainer3" class="image-container">
+                        <img id="processedImage" class="image" src="{{ url_for('static', filename='placeholder-image.png') }}" alt="Processed Image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        document.getElementById('uploadButton').addEventListener('click', function () {
+            const imageInput = document.getElementById('imageInput');
+            const uploadedImage = document.getElementById('uploadedImage');
+            const file = imageInput.files[0];
+
+            if (file) {
+                const imageURL = URL.createObjectURL(file);
+                uploadedImage.src = imageURL;
+            }
+        });
+
+        document.getElementById('showStyleButton').addEventListener('click', function () {
+            const processingSelect = document.getElementById('processingSelect');
+            const styleImage = document.getElementById('styleImage');
+            const styleOption = processingSelect.value;
+
+            // clear the previous style image
+            styleImage.src = '';
+
+            // console.log(styleOption);
+            let number_of_images = 1;
+            if (styleOption !== 'choose') {
+                if (styleOption == 'sketches') {
+                    number_of_images = 14;
+                } else if (styleOption == 'portraits') {
+                    number_of_images = 13;
+                } else if (styleOption == 'liquify') {
+                    number_of_images = 8;
+                }
+                const fileIndex = Math.floor(Math.random() * number_of_images) + 1;
+                
+                // display style image based on the selected option
+                const styleImagePath = 'style_images/' + styleOption + '/' + fileIndex + '.png';
+                styleImage.src = styleImagePath;
+            }
+        });
+        document.getElementById('processImageButton').addEventListener('click', function () {
+            const imageInput = document.getElementById('imageInput');
+            const processingSelect = document.getElementById('processingSelect');
+            const processedImage = document.getElementById('processedImage');
+            const imageContainer = document.getElementById('imageContaine3');
+            
+            const file = imageInput.files[0];
+            const processingOption = processingSelect.value;
+
+            if (file) {
+                const formData = new FormData();
+                formData.append('image', file);
+                formData.append('processing_option', processingOption);
+
+                fetch('/process_image', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.blob())
+                .then(blob => {
+                    const imageURL = URL.createObjectURL(blob);
+                    processedImage.src = imageURL;
+                    imageContainer.style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

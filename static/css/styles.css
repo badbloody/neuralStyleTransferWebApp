@@ -1,0 +1,102 @@
+body {
+  font-family: Verdana, sans-serif;
+  color: white;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+  gap: 40px; 
+  justify-content: center; 
+  align-items: center; 
+  min-height: 100vh;
+  margin: 0 auto;
+}
+
+.select-container, .wrapper-div {
+  width: 92%; 
+  padding: 10px; 
+  border: 3px solid #ccc;
+  background: white;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.filler-div {
+  width: 92%; 
+  padding: 15px; 
+  margin-bottom: 25px;
+}
+
+#processingSelect {
+  width: 100%; 
+  padding: 1px; 
+  font-size: 16px; 
+  font-family: Verdana, sans-serif; 
+  background: white; 
+  color: black; 
+  border: none; 
+}
+
+.wrapper-div {
+  color: black;
+}
+
+.set {
+  text-align: center; 
+  margin: 20px;
+  padding: 20px;
+  border: 3px solid #ccc;
+  overflow: hidden;
+}
+
+.set input[type="file"], .set select, .set button {
+    display: block;
+    margin: 0 auto;
+}
+
+.image-container {
+  width: 256px;
+  height: 256px;
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 3px solid #ccc;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+}
+
+h1 {
+  text-align: center;
+}
+
+.set #imageInput {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-and-image {
+  width: 256px;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
+.button {
+  background: transparent;
+  color: white;
+  font-weight: bold;
+  font-family: Verdana, sans-serif;
+  border: 3px solid #ccc; 
+  padding: 10px 20px; 
+  cursor: pointer;
+  margin-top: 10px;
+  width: 101%;
+}
+
+
