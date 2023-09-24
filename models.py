@@ -287,7 +287,6 @@ transform_net.get_param_dict()
 metanet = MetaNet(transform_net.get_param_dict()).to(device)
 
 # load the pretrained models - uncomment the 3 lines below 
-
 # metanet.load_state_dict(torch.load('style_transfer_models\metanet_base32_style20_tv1e-06.pth', map_location=torch.device('cpu')))
 # transform_net.load_state_dict(torch.load('style_transfer_models\metanet_base32_style20_tv1e-06_transform_net.pth', map_location=torch.device('cpu')))
 # print("Loaded models successfully!")
