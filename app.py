@@ -4,6 +4,8 @@ from PIL import Image
 import numpy as np
 from io import BytesIO
 
+# from models import *
+
 app = Flask(__name__, static_url_path='', static_folder='static')
 
 @app.route('/')
@@ -30,12 +32,18 @@ def process_image():
 
         # TODO - apply our model logic here and replace the grayscale method
         if processing_option == 'sketches':
-            # process the image to grayscale 
-            processed_image = process_to_grayscale(uploaded_image_path)
+            processed_image = process_to_sketches(uploaded_image_path)
+
+        elif processing_option == 'liquify':
+            processed_image = process_to_liquify(uploaded_image_path)
+
+        elif processing_option == 'portraits':
+            processed_image = process_to_portraits(uploaded_image_path)
+        
         else:
             # return the original image
             with open(uploaded_image_path, 'rb') as image_file:
-              processed_image = image_file.read()
+                processed_image = image_file.read()
 
         print("Processing complete")
 
@@ -49,6 +57,37 @@ def process_image():
         return str(e)
 
 def process_to_grayscale(image_path):
+    img = Image.open(image_path)
+    img = img.convert('L')  # convert to grayscale
+    grayscale_data = np.array(img)
+    grayscale_image = Image.fromarray(grayscale_data)
+
+    with BytesIO() as buffer:
+        grayscale_image.save(buffer, format="PNG")
+        return BytesIO.getvalue(buffer)
+    
+def process_to_sketches(image_path):
+    img = Image.open(image_path)
+    img = img.convert('L')  # convert to grayscale
+    grayscale_data = np.array(img)
+    grayscale_image = Image.fromarray(grayscale_data)
+
+    with BytesIO() as buffer:
+        grayscale_image.save(buffer, format="PNG")
+        return BytesIO.getvalue(buffer)
+
+    
+def process_to_portraits(image_path):
+    img = Image.open(image_path)
+    img = img.convert('L')  # convert to grayscale
+    grayscale_data = np.array(img)
+    grayscale_image = Image.fromarray(grayscale_data)
+
+    with BytesIO() as buffer:
+        grayscale_image.save(buffer, format="PNG")
+        return BytesIO.getvalue(buffer)
+
+def process_to_liquify(image_path):
     img = Image.open(image_path)
     img = img.convert('L')  # convert to grayscale
     grayscale_data = np.array(img)
